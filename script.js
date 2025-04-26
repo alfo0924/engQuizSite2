@@ -1,368 +1,709 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 測驗問題和答案
-    const quizQuestions = [
-        {
-            question: "The report _____ by the committee last week.",
-            options: ["was approved", "approved", "has approved", "approving"],
-            answer: 0,
-            explanation: "被動語態需要使用「be + 過去分詞」的形式。因為是過去發生的事，所以使用 'was approved'。",
-            category: "動詞時態",
-            difficulty: "easy"
-        },
-        {
-            question: "If I _____ rich, I would travel around the world.",
-            options: ["am", "was", "were", "had been"],
-            answer: 2,
-            explanation: "在虛擬條件句中，表達與現在事實相反的假設時，需使用 'were' 而非 'was'。",
-            category: "條件句",
-            difficulty: "medium"
-        },
-        {
-            question: "She _____ in this company for five years now.",
-            options: ["works", "is working", "has been working", "worked"],
-            answer: 2,
-            explanation: "表達從過去開始持續到現在的動作，應使用現在完成進行式 'has been working'。",
-            category: "動詞時態",
-            difficulty: "medium"
-        },
-        {
-            question: "_____ the exam, he went out to celebrate with his friends.",
-            options: ["Having passed", "Passed", "To pass", "Pass"],
-            answer: 0,
-            explanation: "表達在主要動作之前完成的動作，可使用現在分詞的完成式 'Having passed'。",
-            category: "分詞",
-            difficulty: "hard"
-        },
-        {
-            question: "The movie was _____ boring that we left before it ended.",
-            options: ["such", "so", "very", "too"],
-            answer: 1,
-            explanation: "修飾形容詞時，應使用 'so' 而非 'such'。'Such' 用於修飾名詞。",
-            category: "修飾語",
-            difficulty: "easy"
-        },
-        {
-            question: "Neither John nor his friends _____ going to the party.",
-            options: ["is", "are", "was", "were"],
-            answer: 1,
-            explanation: "當主詞為 'Neither...nor...' 結構時，動詞應與較接近的主詞一致。此處 'his friends' 是複數，所以用 'are'。",
-            category: "主謂一致",
-            difficulty: "medium"
-        },
-        {
-            question: "The number of students in the class _____ increased this year.",
-            options: ["have", "has", "are", "is"],
-            answer: 1,
-            explanation: "'The number of' 視為單數，因此應使用單數動詞 'has'。",
-            category: "主謂一致",
-            difficulty: "medium"
-        },
-        {
-            question: "I wish I _____ able to speak French fluently.",
-            options: ["am", "was", "were", "had been"],
-            answer: 2,
-            explanation: "在 'wish' 後面接的子句，表達與現在事實相反的願望時，應使用 'were'。",
-            category: "虛擬語氣",
-            difficulty: "medium"
-        },
-        {
-            question: "She denied _____ the document without permission.",
-            options: ["to access", "accessing", "accessed", "access"],
-            answer: 1,
-            explanation: "某些動詞（如 deny）後接動名詞，而非不定式。",
-            category: "動名詞與不定式",
-            difficulty: "medium"
-        },
-        {
-            question: "It's high time we _____ home.",
-            options: ["go", "went", "gone", "going"],
-            answer: 1,
-            explanation: "'It's high time' 後面應接過去式，表示現在該做的事情。",
-            category: "慣用語",
-            difficulty: "hard"
-        },
-        // 添加更多問題以達到35題...
-        {
-            question: "By the time we arrived, the movie _____.",
-            options: ["already started", "has already started", "had already started", "was already starting"],
-            answer: 2,
-            explanation: "表達在過去某時間點之前已經完成的動作，應使用過去完成式 'had already started'。",
-            category: "動詞時態",
-            difficulty: "medium"
-        },
-        {
-            question: "The teacher insisted that every student _____ the assignment on time.",
-            options: ["submits", "submitted", "submit", "had submitted"],
-            answer: 2,
-            explanation: "在 'insist that' 後的子句中，應使用虛擬語氣，即動詞原形。",
-            category: "虛擬語氣",
-            difficulty: "hard"
-        },
-        {
-            question: "_____ tired, she decided to take a nap.",
-            options: ["Being", "Been", "Be", "To be"],
-            answer: 0,
-            explanation: "表達原因時，可使用現在分詞 'Being' 開頭的分詞構句。",
-            category: "分詞",
-            difficulty: "medium"
-        },
-        {
-            question: "The book, _____ was published last year, has won several awards.",
-            options: ["who", "whom", "whose", "which"],
-            answer: 3,
-            explanation: "關係代名詞 'which' 用來指代物品，此處指代 'book'。",
-            category: "關係代名詞",
-            difficulty: "easy"
-        },
-        {
-            question: "Had I known about the traffic, I _____ earlier.",
-            options: ["would leave", "had left", "would have left", "left"],
-            answer: 2,
-            explanation: "在倒裝的虛擬條件句中，表達與過去事實相反的假設，主句應使用 'would have + 過去分詞'。",
-            category: "條件句",
-            difficulty: "hard"
-        }
-        // 請根據需要繼續添加問題，直到達到35題
-    ];
+    // DOM 元素
+    const introSection = document.getElementById('intro');
+    const quizContainer = document.getElementById('quiz-container');
+    const resultsContainer = document.getElementById('results-container');
+    const startBtn = document.getElementById('start-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const progressBar = document.getElementById('progress-bar');
+    const currentQuestionSpan = document.getElementById('current-question');
+    const quizContent = document.getElementById('quiz-content');
+    const levelBtns = document.querySelectorAll('.level-btn');
 
-    // 初始化變數
+    // 結果頁面元素
+    const finalScoreSpan = document.getElementById('final-score');
+    const correctCountSpan = document.getElementById('correct-count');
+    const incorrectCountSpan = document.getElementById('incorrect-count');
+    const toeicScoreSpan = document.getElementById('toeic-score');
+    const toeflScoreSpan = document.getElementById('toefl-score');
+    const weaknessChart = document.getElementById('weakness-chart');
+    const resultsList = document.getElementById('results-list');
+
+    // 測驗狀態
     let currentQuestion = 0;
-    let score = 0;
-    let userAnswers = Array(quizQuestions.length).fill(null);
-    let quizSubmitted = false;
+    let selectedLevel = 'medium'; // 預設中級
+    let userAnswers = [];
+    let questions = [];
 
-    // 獲取DOM元素
-    const quizElement = document.getElementById('quiz');
-    const previousButton = document.getElementById('previous');
-    const nextButton = document.getElementById('next');
-    const submitButton = document.getElementById('submit');
-    const currentQuestionElement = document.getElementById('current-question');
-    const totalQuestionsElement = document.getElementById('total-questions');
-    const scoreSection = document.getElementById('score-section');
-    const scoreElement = document.getElementById('score');
-    const progressFill = document.getElementById('progress-fill');
-    const analysisElement = document.getElementById('analysis');
+    // 文法類型
+    const grammarTypes = {
+        verb: '動詞時態與語態',
+        noun: '名詞與冠詞',
+        adj: '形容詞與副詞',
+        prep: '介系詞',
+        conj: '連接詞',
+        pron: '代名詞',
+        cond: '條件句',
+        modal: '情態動詞',
+        comp: '比較級與最高級',
+        clause: '子句'
+    };
 
-    // 設置總題數
-    totalQuestionsElement.textContent = quizQuestions.length;
+    // 初始化事件監聽器
+    function initEventListeners() {
+        startBtn.addEventListener('click', startQuiz);
+        prevBtn.addEventListener('click', goToPrevQuestion);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        submitBtn.addEventListener('click', submitQuiz);
+        restartBtn.addEventListener('click', restartQuiz);
 
-    // 顯示當前問題
-    function showQuestion(questionIndex) {
-        const question = quizQuestions[questionIndex];
-
-        // 創建問題容器
-        let questionHTML = `
-            <div class="question-container">
-                <p class="question">${questionIndex + 1}. ${question.question}
-                    <span class="difficulty ${question.difficulty}">${getDifficultyText(question.difficulty)}</span>
-                </p>
-                <ul class="options">
-        `;
-
-        // 添加選項
-        question.options.forEach((option, index) => {
-            const isSelected = userAnswers[questionIndex] === index;
-            const optionClass = quizSubmitted
-                ? getOptionClass(index, question.answer, userAnswers[questionIndex])
-                : (isSelected ? 'selected' : '');
-
-            questionHTML += `
-                <li class="option ${optionClass}" data-index="${index}">
-                    ${String.fromCharCode(65 + index)}. ${option}
-                </li>
-            `;
+        // 難度選擇按鈕
+        levelBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                levelBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedLevel = this.dataset.level;
+            });
         });
 
-        questionHTML += `</ul>`;
+        // 預設選中中級難度
+        document.querySelector('[data-level="medium"]').classList.add('active');
+    }
 
-        // 如果已提交測驗，顯示解釋
-        if (quizSubmitted) {
-            const isCorrect = userAnswers[questionIndex] === question.answer;
-            questionHTML += `
-                <div class="feedback ${isCorrect ? 'correct' : 'incorrect'} visible">
-                    <p><strong>${isCorrect ? '正確！' : '錯誤！'}</strong> ${question.explanation}</p>
-                </div>
-            `;
-        }
+    // 開始測驗
+    function startQuiz() {
+        // 根據選擇的難度載入題目
+        loadQuestions(selectedLevel);
 
-        questionHTML += `</div>`;
+        // 初始化用戶答案陣列
+        userAnswers = Array(questions.length).fill(null);
 
-        quizElement.innerHTML = questionHTML;
+        // 顯示測驗區塊，隱藏介紹區塊
+        introSection.classList.add('hidden');
+        quizContainer.classList.remove('hidden');
 
-        // 如果測驗尚未提交，添加選項點擊事件
-        if (!quizSubmitted) {
-            document.querySelectorAll('.option').forEach(option => {
-                option.addEventListener('click', () => {
-                    selectOption(option.dataset.index);
-                });
+        // 顯示第一題
+        showQuestion(0);
+    }
+
+    // 載入題目
+    function loadQuestions(level) {
+        // 這裡應該根據難度等級載入不同的題目
+        // 以下為示範用的題目
+        questions = generateQuestions(level);
+    }
+
+    // 顯示當前題目
+    function showQuestion(index) {
+        const question = questions[index];
+        currentQuestion = index;
+
+        // 更新進度條和題號
+        updateProgress();
+
+        // 清空並填充題目內容
+        quizContent.innerHTML = '';
+
+        const questionContainer = document.createElement('div');
+        questionContainer.className = 'question-container';
+
+        const questionText = document.createElement('div');
+        questionText.className = 'question-text';
+        questionText.textContent = `${index + 1}. ${question.question}`;
+        questionContainer.appendChild(questionText);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'options-container';
+
+        // 創建選項
+        question.options.forEach((option, optionIndex) => {
+            const optionItem = document.createElement('div');
+            optionItem.className = 'option-item';
+            if (userAnswers[index] === optionIndex) {
+                optionItem.classList.add('selected');
+            }
+
+            optionItem.addEventListener('click', () => {
+                selectOption(index, optionIndex);
             });
-        }
 
-        // 更新當前問題顯示
-        currentQuestionElement.textContent = questionIndex + 1;
+            const optionLabel = document.createElement('span');
+            optionLabel.className = 'option-label';
+            optionLabel.textContent = String.fromCharCode(65 + optionIndex); // A, B, C, D
+
+            const optionText = document.createElement('span');
+            optionText.className = 'option-text';
+            optionText.textContent = option;
+
+            optionItem.appendChild(optionLabel);
+            optionItem.appendChild(optionText);
+            optionsContainer.appendChild(optionItem);
+        });
+
+        questionContainer.appendChild(optionsContainer);
+        quizContent.appendChild(questionContainer);
 
         // 更新按鈕狀態
-        updateButtonStates();
+        updateButtonState();
     }
 
     // 選擇選項
-    function selectOption(optionIndex) {
-        userAnswers[currentQuestion] = parseInt(optionIndex);
-        showQuestion(currentQuestion);
-    }
+    function selectOption(questionIndex, optionIndex) {
+        userAnswers[questionIndex] = optionIndex;
 
-    // 更新按鈕狀態
-    function updateButtonStates() {
-        previousButton.disabled = currentQuestion === 0;
-
-        if (quizSubmitted) {
-            nextButton.textContent = '下一題';
-            nextButton.disabled = currentQuestion === quizQuestions.length - 1;
-            submitButton.classList.add('hidden');
-        } else {
-            if (currentQuestion === quizQuestions.length - 1) {
-                nextButton.classList.add('hidden');
-                submitButton.classList.remove('hidden');
+        // 更新選中狀態
+        const optionItems = document.querySelectorAll('.option-item');
+        optionItems.forEach((item, index) => {
+            if (index === optionIndex) {
+                item.classList.add('selected');
             } else {
-                nextButton.textContent = '下一題';
-                nextButton.classList.remove('hidden');
-                submitButton.classList.add('hidden');
-            }
-        }
-    }
-
-    // 獲取選項的CSS類名
-    function getOptionClass(optionIndex, correctAnswer, userAnswer) {
-        if (optionIndex === correctAnswer) {
-            return 'correct';
-        } else if (optionIndex === userAnswer && userAnswer !== correctAnswer) {
-            return 'incorrect';
-        }
-        return '';
-    }
-
-    // 獲取難度文字
-    function getDifficultyText(difficulty) {
-        switch(difficulty) {
-            case 'easy': return '簡單';
-            case 'medium': return '中等';
-            case 'hard': return '困難';
-            default: return '';
-        }
-    }
-
-    // 計算得分並顯示結果
-    function calculateAndShowResults() {
-        score = 0;
-        const categoryStats = {};
-        const incorrectCategories = {};
-
-        // 計算得分和統計各類別的正確率
-        quizQuestions.forEach((question, index) => {
-            if (userAnswers[index] === question.answer) {
-                score++;
-            }
-
-            // 統計類別
-            if (!categoryStats[question.category]) {
-                categoryStats[question.category] = { total: 0, correct: 0 };
-            }
-
-            categoryStats[question.category].total++;
-
-            if (userAnswers[index] === question.answer) {
-                categoryStats[question.category].correct++;
-            } else {
-                if (!incorrectCategories[question.category]) {
-                    incorrectCategories[question.category] = 0;
-                }
-                incorrectCategories[question.category]++;
+                item.classList.remove('selected');
             }
         });
 
-        // 顯示得分
-        scoreElement.textContent = score;
-        progressFill.style.width = `${(score / quizQuestions.length) * 100}%`;
-
-        // 生成分析報告
-        let analysisHTML = `<h3>測驗分析</h3>`;
-
-        // 類別分析
-        analysisHTML += `<div class="category-analysis">`;
-
-        for (const category in categoryStats) {
-            const stats = categoryStats[category];
-            const percentage = Math.round((stats.correct / stats.total) * 100);
-
-            analysisHTML += `
-                <div class="category-item">
-                    <div class="category-header">
-                        <span>${category}</span>
-                        <span>${stats.correct}/${stats.total} (${percentage}%)</span>
-                    </div>
-                    <div class="category-bar">
-                        <div class="category-fill" style="width: ${percentage}%"></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        analysisHTML += `</div>`;
-
-        // 需要加強的部分
-        const sortedCategories = Object.entries(incorrectCategories)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 3);
-
-        if (sortedCategories.length > 0) {
-            analysisHTML += `<h3>需要加強的部分</h3><ul>`;
-
-            sortedCategories.forEach(([category, count]) => {
-                analysisHTML += `<li>${category} (錯誤 ${count} 題)</li>`;
-            });
-
-            analysisHTML += `</ul>`;
-        }
-
-        // 顯示分析報告
-        analysisElement.innerHTML = analysisHTML;
-
-        // 顯示得分區域
-        scoreSection.classList.remove('hidden');
+        // 更新按鈕狀態
+        updateButtonState();
     }
 
-    // 事件監聽器
-    previousButton.addEventListener('click', () => {
-        if (currentQuestion > 0) {
-            currentQuestion--;
-            showQuestion(currentQuestion);
-        }
-    });
+    // 更新進度條和題號
+    function updateProgress() {
+        const progress = ((currentQuestion + 1) / questions.length) * 100;
+        progressBar.style.width = `${progress}%`;
+        currentQuestionSpan.textContent = currentQuestion + 1;
+    }
 
-    nextButton.addEventListener('click', () => {
-        if (currentQuestion < quizQuestions.length - 1) {
-            currentQuestion++;
-            showQuestion(currentQuestion);
-        }
-    });
+    // 更新按鈕狀態
+    function updateButtonState() {
+        // 上一題按鈕
+        prevBtn.disabled = currentQuestion === 0;
 
-    submitButton.addEventListener('click', () => {
-        // 檢查是否所有問題都已回答
-        const unansweredQuestions = userAnswers.findIndex(answer => answer === null);
+        // 下一題和提交按鈕
+        if (currentQuestion === questions.length - 1) {
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
 
-        if (unansweredQuestions !== -1) {
-            if (confirm(`您有尚未回答的問題。確定要提交嗎？`)) {
-                quizSubmitted = true;
-                calculateAndShowResults();
-                showQuestion(currentQuestion);
-            }
+            // 檢查是否所有題目都已回答
+            const allAnswered = userAnswers.every(answer => answer !== null);
+            submitBtn.disabled = !allAnswered;
         } else {
-            quizSubmitted = true;
-            calculateAndShowResults();
-            showQuestion(currentQuestion);
+            nextBtn.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
         }
-    });
+    }
 
-    // 初始化顯示第一題
-    showQuestion(currentQuestion);
+    // 前往上一題
+    function goToPrevQuestion() {
+        if (currentQuestion > 0) {
+            showQuestion(currentQuestion - 1);
+        }
+    }
+
+    // 前往下一題
+    function goToNextQuestion() {
+        if (currentQuestion < questions.length - 1) {
+            showQuestion(currentQuestion + 1);
+        }
+    }
+
+    // 提交測驗
+    function submitQuiz() {
+        // 計算分數
+        const results = calculateResults();
+
+        // 顯示結果
+        displayResults(results);
+
+        // 隱藏測驗區塊，顯示結果區塊
+        quizContainer.classList.add('hidden');
+        resultsContainer.classList.remove('hidden');
+    }
+
+    // 計算測驗結果
+    function calculateResults() {
+        let correctCount = 0;
+        const weaknesses = {};
+
+        // 計算正確答案數量和弱點
+        questions.forEach((question, index) => {
+            const userAnswer = userAnswers[index];
+            const isCorrect = userAnswer === question.correctAnswer;
+
+            if (isCorrect) {
+                correctCount++;
+            } else {
+                // 記錄弱點
+                if (!weaknesses[question.type]) {
+                    weaknesses[question.type] = 0;
+                }
+                weaknesses[question.type]++;
+            }
+        });
+
+        // 計算分數 (100分制)
+        const score = Math.round((correctCount / questions.length) * 100);
+
+        // 估算多益和托福分數
+        const toeicScore = estimateToeicScore(score, selectedLevel);
+        const toeflScore = estimateToeflScore(score, selectedLevel);
+
+        return {
+            score,
+            correctCount,
+            incorrectCount: questions.length - correctCount,
+            toeicScore,
+            toeflScore,
+            weaknesses
+        };
+    }
+
+    // 估算多益分數
+    function estimateToeicScore(score, level) {
+        let baseScore;
+
+        switch (level) {
+            case 'easy':
+                baseScore = 250;
+                return Math.min(550, baseScore + score * 3);
+            case 'medium':
+                baseScore = 550;
+                return Math.min(750, baseScore + score * 2);
+            case 'hard':
+                baseScore = 750;
+                return Math.min(990, baseScore + score * 2.4);
+            default:
+                return 0;
+        }
+    }
+
+    // 估算托福分數
+    function estimateToeflScore(score, level) {
+        let baseScore;
+
+        switch (level) {
+            case 'easy':
+                baseScore = 10;
+                return Math.min(40, baseScore + score * 0.3);
+            case 'medium':
+                baseScore = 40;
+                return Math.min(70, baseScore + score * 0.3);
+            case 'hard':
+                baseScore = 70;
+                return Math.min(100, baseScore + score * 0.3);
+            default:
+                return 0;
+        }
+    }
+
+    // 顯示測驗結果
+    function displayResults(results) {
+        // 更新分數摘要
+        finalScoreSpan.textContent = results.score;
+        correctCountSpan.textContent = results.correctCount;
+        incorrectCountSpan.textContent = results.incorrectCount;
+        toeicScoreSpan.textContent = results.toeicScore;
+        toeflScoreSpan.textContent = results.toeflScore;
+
+        // 顯示弱點分析
+        displayWeaknesses(results.weaknesses);
+
+        // 顯示詳細答題結果
+        displayDetailedResults();
+    }
+
+    // 顯示弱點分析
+    function displayWeaknesses(weaknesses) {
+        weaknessChart.innerHTML = '';
+
+        // 按錯誤數量排序
+        const sortedWeaknesses = Object.entries(weaknesses)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5); // 只顯示前5個弱點
+
+        if (sortedWeaknesses.length === 0) {
+            const perfectMessage = document.createElement('p');
+            perfectMessage.textContent = '恭喜！您沒有明顯的弱點。';
+            weaknessChart.appendChild(perfectMessage);
+            return;
+        }
+
+        sortedWeaknesses.forEach(([type, count]) => {
+            const weaknessItem = document.createElement('div');
+            weaknessItem.className = 'weakness-item';
+
+            const weaknessName = document.createElement('span');
+            weaknessName.textContent = grammarTypes[type] || type;
+
+            const weaknessCount = document.createElement('span');
+            weaknessCount.className = 'weakness-count';
+            weaknessCount.textContent = count;
+
+            weaknessItem.appendChild(weaknessName);
+            weaknessItem.appendChild(weaknessCount);
+            weaknessChart.appendChild(weaknessItem);
+        });
+    }
+
+    // 顯示詳細答題結果
+    function displayDetailedResults() {
+        resultsList.innerHTML = '';
+
+        questions.forEach((question, index) => {
+            const userAnswer = userAnswers[index];
+            const isCorrect = userAnswer === question.correctAnswer;
+
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+
+            // 題目
+            const resultQuestion = document.createElement('div');
+            resultQuestion.className = 'result-question';
+
+            const resultStatus = document.createElement('span');
+            resultStatus.className = `result-status ${isCorrect ? 'correct' : 'incorrect'}`;
+            resultStatus.innerHTML = isCorrect ? '✓' : '✗';
+
+            const questionText = document.createElement('span');
+            questionText.textContent = `${index + 1}. ${question.question}`;
+
+            resultQuestion.appendChild(resultStatus);
+            resultQuestion.appendChild(questionText);
+            resultItem.appendChild(resultQuestion);
+
+            // 選項
+            const resultOptions = document.createElement('div');
+            resultOptions.className = 'result-options';
+
+            question.options.forEach((option, optionIndex) => {
+                const resultOption = document.createElement('div');
+                resultOption.className = 'result-option';
+
+                if (optionIndex === userAnswer && !isCorrect) {
+                    resultOption.classList.add('user-answer');
+                }
+
+                if (optionIndex === question.correctAnswer) {
+                    resultOption.classList.add('correct-answer');
+                }
+
+                const optionLabel = document.createElement('span');
+                optionLabel.className = 'option-label';
+                optionLabel.textContent = String.fromCharCode(65 + optionIndex); // A, B, C, D
+
+                const optionText = document.createElement('span');
+                optionText.textContent = option;
+
+                resultOption.appendChild(optionLabel);
+                resultOption.appendChild(optionText);
+                resultOptions.appendChild(resultOption);
+            });
+
+            resultItem.appendChild(resultOptions);
+
+            // 解釋
+            if (!isCorrect) {
+                const explanation = document.createElement('div');
+                explanation.className = 'explanation';
+
+                const explanationTitle = document.createElement('div');
+                explanationTitle.className = 'explanation-title';
+                explanationTitle.textContent = '解析：';
+
+                const explanationText = document.createElement('div');
+                explanationText.textContent = question.explanation;
+
+                explanation.appendChild(explanationTitle);
+                explanation.appendChild(explanationText);
+                resultItem.appendChild(explanation);
+            }
+
+            resultsList.appendChild(resultItem);
+        });
+    }
+
+    // 重新開始測驗
+    function restartQuiz() {
+        // 重置狀態
+        currentQuestion = 0;
+        userAnswers = [];
+
+        // 顯示介紹區塊，隱藏結果區塊
+        resultsContainer.classList.add('hidden');
+        introSection.classList.remove('hidden');
+    }
+
+    // 生成測驗題目 (根據難度)
+    function generateQuestions(level) {
+        // 這裡應該從資料庫或API獲取題目
+        // 以下為示範用的題目
+
+        // 基本題庫
+        const easyQuestions = [
+            {
+                question: "She _____ to the store yesterday.",
+                options: ["go", "goes", "went", "going"],
+                correctAnswer: 2,
+                type: "verb",
+                explanation: "過去式應使用went，因為yesterday表示過去時間。"
+            },
+            {
+                question: "There _____ some books on the table.",
+                options: ["is", "are", "be", "been"],
+                correctAnswer: 1,
+                type: "verb",
+                explanation: "複數名詞books作主詞，應使用複數動詞are。"
+            },
+            {
+                question: "I have _____ apple.",
+                options: ["a", "an", "the", "no article"],
+                correctAnswer: 1,
+                type: "noun",
+                explanation: "apple開頭是母音，應使用冠詞an。"
+            },
+            {
+                question: "He speaks English _____.",
+                options: ["good", "well", "nice", "fine"],
+                correctAnswer: 1,
+                type: "adj",
+                explanation: "修飾動詞speaks應使用副詞well，而非形容詞good。"
+            },
+            {
+                question: "The book is _____ the table.",
+                options: ["in", "on", "at", "by"],
+                correctAnswer: 1,
+                type: "prep",
+                explanation: "表示物體在平面上，應使用介系詞on。"
+            },
+            {
+                question: "I like coffee _____ I don't like tea.",
+                options: ["but", "and", "or", "so"],
+                correctAnswer: 0,
+                type: "conj",
+                explanation: "表示轉折關係，應使用連接詞but。"
+            },
+            {
+                question: "This is _____ book.",
+                options: ["I", "me", "my", "mine"],
+                correctAnswer: 2,
+                type: "pron",
+                explanation: "修飾名詞book應使用形容詞性物主代名詞my。"
+            },
+            {
+                question: "If it rains tomorrow, I _____ at home.",
+                options: ["stay", "stays", "will stay", "staying"],
+                correctAnswer: 2,
+                type: "cond",
+                explanation: "條件句中，主句應使用will + 動詞原形表示將來。"
+            },
+            {
+                question: "You _____ smoke in the hospital.",
+                options: ["can", "must", "should", "must not"],
+                correctAnswer: 3,
+                type: "modal",
+                explanation: "表示禁止，應使用must not。"
+            },
+            {
+                question: "This building is _____ than that one.",
+                options: ["tall", "taller", "tallest", "more tall"],
+                correctAnswer: 1,
+                type: "comp",
+                explanation: "比較兩個物體，應使用比較級taller。"
+            }
+        ];
+
+        const mediumQuestions = [
+            {
+                question: "By the time we arrived, the movie _____.",
+                options: ["already started", "has already started", "had already started", "was already starting"],
+                correctAnswer: 2,
+                type: "verb",
+                explanation: "過去完成式表示在過去某時間點之前已經完成的動作，應使用had already started。"
+            },
+            {
+                question: "I wish I _____ more time to finish this project.",
+                options: ["have", "had", "would have", "will have"],
+                correctAnswer: 1,
+                type: "verb",
+                explanation: "wish後接虛擬語氣，表示與現在事實相反的假設，應使用had。"
+            },
+            {
+                question: "The committee _____ divided on this issue.",
+                options: ["is", "are", "has", "have"],
+                correctAnswer: 0,
+                type: "noun",
+                explanation: "committee是集合名詞，視為單數，因此用is。"
+            },
+            {
+                question: "She spoke _____ quietly that nobody could hear her.",
+                options: ["so", "such", "very", "too"],
+                correctAnswer: 0,
+                type: "adj",
+                explanation: "so + 副詞 + that結構，表示程度，應使用so。"
+            },
+            {
+                question: "The report was submitted _____ May 15th.",
+                options: ["in", "on", "at", "by"],
+                correctAnswer: 1,
+                type: "prep",
+                explanation: "特定日期前應使用介系詞on。"
+            },
+            {
+                question: "_____ it was raining, we decided to go for a walk.",
+                options: ["Although", "Because", "Since", "Unless"],
+                correctAnswer: 0,
+                type: "conj",
+                explanation: "表示讓步關係，應使用連接詞Although。"
+            },
+            {
+                question: "The manager asked _____ to finish the report by Friday.",
+                options: ["I", "me", "myself", "mine"],
+                correctAnswer: 1,
+                type: "pron",
+                explanation: "作為動詞asked的賓語，應使用賓格me。"
+            },
+            {
+                question: "If I _____ rich, I would travel around the world.",
+                options: ["am", "was", "were", "had been"],
+                correctAnswer: 2,
+                type: "cond",
+                explanation: "虛擬條件句表示與現在事實相反的假設，應使用were。"
+            },
+            {
+                question: "You _____ have seen John yesterday; he's been in New York all week.",
+                options: ["must", "can't", "should", "might"],
+                correctAnswer: 1,
+                type: "modal",
+                explanation: "表示不可能，應使用can't have seen。"
+            },
+            {
+                question: "The project was _____ challenging than we expected.",
+                options: ["less", "more", "most", "least"],
+                correctAnswer: 1,
+                type: "comp",
+                explanation: "比較級表示程度超過預期，應使用more。"
+            }
+        ];
+
+        const hardQuestions = [
+            {
+                question: "Had I known about the problem earlier, I _____ it.",
+                options: ["would solve", "would have solved", "will solve", "had solved"],
+                correctAnswer: 1,
+                type: "verb",
+                explanation: "虛擬條件句表示與過去事實相反的假設，主句應使用would have + 過去分詞。"
+            },
+            {
+                question: "Not only _____ the exam, but he also got the highest score.",
+                options: ["he passed", "did he pass", "passed he", "he did pass"],
+                correctAnswer: 1,
+                type: "verb",
+                explanation: "Not only位於句首時，需要倒裝結構，應使用did he pass。"
+            },
+            {
+                question: "The data _____ carefully before being published.",
+                options: ["was analyzed", "were analyzed", "was analyzing", "were analyzing"],
+                correctAnswer: 0,
+                type: "noun",
+                explanation: "data雖源自複數，但在現代英語中常視為單數，因此用was analyzed。"
+            },
+            {
+                question: "The novel was _____ written that it won several literary awards.",
+                options: ["so well", "such well", "so good", "such good"],
+                correctAnswer: 0,
+                type: "adj",
+                explanation: "so + 副詞 + 過去分詞結構，應使用so well。"
+            },
+            {
+                question: "The findings of the study are consistent _____ previous research.",
+                options: ["to", "with", "for", "by"],
+                correctAnswer: 1,
+                type: "prep",
+                explanation: "consistent搭配介系詞with。"
+            },
+            {
+                question: "_____ the economy improves, unemployment rates will continue to rise.",
+                options: ["Unless", "While", "Because", "Since"],
+                correctAnswer: 0,
+                type: "conj",
+                explanation: "表示條件關係，應使用連接詞Unless。"
+            },
+            {
+                question: "The issue to _____ she referred has been resolved.",
+                options: ["who", "whom", "which", "whose"],
+                correctAnswer: 2,
+                type: "pron",
+                explanation: "關係代名詞指代非人的issue，且在介系詞to後作賓語，應使用which。"
+            },
+            {
+                question: "Were the resources to be allocated differently, the outcome _____ more favorable.",
+                options: ["will be", "would be", "will have been", "would have been"],
+                correctAnswer: 1,
+                type: "cond",
+                explanation: "虛擬條件句倒裝結構，主句應使用would be。"
+            },
+            {
+                question: "The regulations stipulate that all participants _____ submit their applications by the deadline.",
+                options: ["must", "should", "can", "may"],
+                correctAnswer: 0,
+                type: "modal",
+                explanation: "表示強制性要求，應使用must。"
+            },
+            {
+                question: "The implications of this theory are far _____ than initially anticipated.",
+                options: ["more reaching", "more reached", "further reaching", "further reached"],
+                correctAnswer: 2,
+                type: "comp",
+                explanation: "慣用表達為far further reaching。"
+            }
+        ];
+
+        // 根據難度選擇題目
+        let baseQuestions;
+        switch (level) {
+            case 'easy':
+                baseQuestions = easyQuestions;
+                break;
+            case 'medium':
+                baseQuestions = mediumQuestions;
+                break;
+            case 'hard':
+                baseQuestions = hardQuestions;
+                break;
+            default:
+                baseQuestions = mediumQuestions;
+        }
+
+        // 生成35題
+        let selectedQuestions = [];
+
+        // 首先加入基本題庫
+        selectedQuestions = [...baseQuestions];
+
+        // 如果基本題庫不足35題，從其他難度補充
+        if (selectedQuestions.length < 35) {
+            let additionalQuestions = [];
+
+            if (level === 'easy') {
+                additionalQuestions = [...mediumQuestions];
+            } else if (level === 'hard') {
+                additionalQuestions = [...mediumQuestions];
+            } else {
+                additionalQuestions = [...easyQuestions, ...hardQuestions];
+            }
+
+            // 隨機選擇額外題目直到達到35題
+            while (selectedQuestions.length < 35 && additionalQuestions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * additionalQuestions.length);
+                selectedQuestions.push(additionalQuestions[randomIndex]);
+                additionalQuestions.splice(randomIndex, 1);
+            }
+        }
+
+        // 如果還是不足35題，重複使用基本題庫
+        while (selectedQuestions.length < 35) {
+            const randomIndex = Math.floor(Math.random() * baseQuestions.length);
+            const question = {...baseQuestions[randomIndex]};
+            // 稍微修改題目以避免完全重複
+            question.question = `[複習] ${question.question}`;
+            selectedQuestions.push(question);
+        }
+
+        // 只取前35題
+        return selectedQuestions.slice(0, 35);
+    }
+
+    // 初始化
+    initEventListeners();
 });

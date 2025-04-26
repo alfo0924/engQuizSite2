@@ -3,39 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英文文法測驗</title>
+    <title>英文文法能力測驗 | FAST 文法測驗系統</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="quiz-container">
-    <header>
-        <h1>英文文法能力測驗</h1>
-        <p class="description">本測驗包含35題英文文法題，難度範圍涵蓋多益10-990分及托福10-100分水平</p>
-    </header>
+<header>
+    <div class="container">
+        <h1>FAST 英文文法能力測驗</h1>
+        <p class="subtitle">Free Assessment of Structural Test</p>
+    </div>
+</header>
 
-    <div id="score-section" class="hidden">
-        <div class="score-display">
-            <h2>您的得分：<span id="score">0</span> / 35</h2>
-            <div class="progress-bar">
-                <div id="progress-fill"></div>
+<main class="container">
+    <section id="intro">
+        <h2>測驗說明</h2>
+        <p>本測驗共35題，涵蓋多益(10-990分)及托福(10-100分)難度範圍的英文文法題目。完成後將獲得詳細分析報告。</p>
+        <div class="difficulty-selector">
+            <h3>選擇難度等級</h3>
+            <div class="level-buttons">
+                <button class="level-btn" data-level="easy">初級 (多益250-550分)</button>
+                <button class="level-btn" data-level="medium">中級 (多益550-750分)</button>
+                <button class="level-btn" data-level="hard">高級 (多益750-990分)</button>
             </div>
         </div>
-        <div id="analysis" class="analysis-section"></div>
-    </div>
+        <button id="start-btn" class="primary-btn">開始測驗</button>
+    </section>
 
-    <div id="quiz">
-        <!-- 問題將由JavaScript動態生成 -->
-    </div>
-
-    <div class="controls">
-        <button id="previous" class="btn" disabled>上一題</button>
-        <div class="pagination">
-            <span id="current-question">1</span> / <span id="total-questions">35</span>
+    <section id="quiz-container" class="hidden">
+        <div id="progress-bar-container">
+            <div id="progress-bar"></div>
         </div>
-        <button id="next" class="btn">下一題</button>
-        <button id="submit" class="btn submit-btn hidden">提交測驗</button>
+        <div id="progress-text">題目 <span id="current-question">1</span> / 35</div>
+
+        <div id="quiz-content">
+            <!-- 題目將由JavaScript動態生成 -->
+        </div>
+
+        <div class="quiz-controls">
+            <button id="prev-btn" class="secondary-btn" disabled>上一題</button>
+            <button id="next-btn" class="secondary-btn">下一題</button>
+            <button id="submit-btn" class="primary-btn hidden">提交答案</button>
+        </div>
+    </section>
+
+    <section id="results-container" class="hidden">
+        <div id="score-summary">
+            <h2>測驗結果</h2>
+            <div class="score-display">
+                <div class="score-circle">
+                    <span id="final-score">0</span>
+                    <span class="score-label">分</span>
+                </div>
+                <div class="score-details">
+                    <p>總題數: <span id="total-questions">35</span></p>
+                    <p>答對題數: <span id="correct-count">0</span></p>
+                    <p>答錯題數: <span id="incorrect-count">0</span></p>
+                </div>
+            </div>
+            <div id="level-estimation">
+                <h3>能力評估</h3>
+                <p>多益估計分數: <span id="toeic-score">0</span></p>
+                <p>托福估計分數: <span id="toefl-score">0</span></p>
+            </div>
+        </div>
+
+        <div id="weakness-analysis">
+            <h3>需加強的文法類型</h3>
+            <div id="weakness-chart">
+                <!-- 圖表將由JavaScript生成 -->
+            </div>
+        </div>
+
+        <div id="detailed-results">
+            <h3>詳細答題結果</h3>
+            <div id="results-list">
+                <!-- 詳細結果將由JavaScript生成 -->
+            </div>
+        </div>
+
+        <button id="restart-btn" class="primary-btn">重新測驗</button>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>© 2025 FAST 英文文法測驗系統 | 專為華人設計的英文文法評量工具</p>
     </div>
-</div>
+</footer>
 
 <script src="script.js"></script>
 </body>
