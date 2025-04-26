@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英文文法測驗</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="quiz-container">
+    <header>
+        <h1>英文文法能力測驗</h1>
+        <p class="description">本測驗包含35題英文文法題，難度範圍涵蓋多益10-990分及托福10-100分水平</p>
+    </header>
+
+    <div id="score-section" class="hidden">
+        <div class="score-display">
+            <h2>您的得分：<span id="score">0</span> / 35</h2>
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+        </div>
+        <div id="analysis" class="analysis-section"></div>
+    </div>
+
+    <div id="quiz">
+        <!-- 問題將由JavaScript動態生成 -->
+    </div>
+
+    <div class="controls">
+        <button id="previous" class="btn" disabled>上一題</button>
+        <div class="pagination">
+            <span id="current-question">1</span> / <span id="total-questions">35</span>
+        </div>
+        <button id="next" class="btn">下一題</button>
+        <button id="submit" class="btn submit-btn hidden">提交測驗</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
